@@ -1,28 +1,34 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import Entities from "./components/Entities/Entities";
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+export let setEntities = () => {};
+export let entities = [];
+export let actions = {
+  addValidation: (entityIndex, columnIndex) => {
+    entities[0].columns[0].validations.push({});
+    setEntities([...entities]);
+    console.log(entities);
+  },
+  addColumn: entityIndex => {
+    entities[0].columns.push({
+      name: "column1",
+      columnType: "@Column()",
+      tsType: "string",
+      options: "",
+      validations: [1]
+    });
+    setEntities([...entities]);
   }
-}
+};
+
+const App = () => {
+  [entities, setEntities] = useState([]);
+  return (
+    <>
+      <Entities />
+    </>
+  );
+};
 
 export default App;
