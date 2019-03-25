@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { columnTypes } from "../../constants/columnTypes";
 import Validation from "./Validation";
-import { actions, entities, setEntities } from "../../App";
+import { actions } from "../../hooks/entities";
 
 function Column(props) {
   const { column } = props;

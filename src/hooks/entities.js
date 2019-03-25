@@ -1,24 +1,56 @@
 import { useState } from "react";
-
-let state = 0;
-export const store = {
-  state: 0,
-  setState(value) {
-    store.state = value;
-    // store.setters.forEach(setter => setter(store.state));
-    store.setter(store.state);
-  },
-  setters: []
+let state = { entities: [] };
+let dispatchers = [];
+const runDispatchers = () => {
+  dispatchers.forEach(dispatcher => {
+    dispatcher(state);
+  });
+};
+const setState = newState => {
+  state = newState;
+  runDispatchers();
 };
 
-export function useStore() {
-  const [state, set] = useState(store.state);
-  // if (!store.setter) {
-  store.setter = set;
-  // }
-  if (!store.setters.includes(set)) {
-    store.setters.push(set);
+export const useCustom = () => {
+  const dispatcher = useState()[1];
+  if (!dispatchers.includes(dispatcher)) {
+    dispatchers.push(dispatcher);
   }
+  return [state, actions];
+};
 
-  return store;
-}
+export let actions = {
+  addValidation: (entityIndex, columnIndex) => {
+    const { entities } = state;
+    entities[0].columns[0].validations.push({});
+    setState({ entities: [...entities] });
+  },
+  addColumn: entityIndex => {
+    const { entities } = state;
+    entities[0].columns.push({
+      name: "column1",
+      columnType: "@Column()",
+      tsType: "string",
+      options: "",
+      validations: [1]
+    });
+    setState({ entities: [...entities] });
+  },
+  addEntity: () => {
+    const { entities } = state;
+    const entity = {
+      unique: [],
+      name: "a",
+      columns: [
+        {
+          name: "id",
+          type: "@PrimaryGeneratedColumn()",
+          tsType: "number",
+          options: "",
+          validations: [1]
+        }
+      ]
+    };
+    setState({ entities: [...entities, entity] });
+  }
+};

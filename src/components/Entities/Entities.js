@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Entity from "./Entity";
-import { entities, setEntities } from "../../App";
+import { useCustom } from "../../hooks/entities";
 
 const addColumn = (entityIndex, entities, setEntities) => {
   entities[entityIndex].columns.push({
@@ -15,33 +15,19 @@ const addColumn = (entityIndex, entities, setEntities) => {
 };
 
 function Entities(props) {
-  const click = () => {
-    const entity = {
-      unique: [],
-      name: "a",
-      columns: [
-        {
-          name: "id",
-          type: "@PrimaryGeneratedColumn()",
-          tsType: "number",
-          options: "",
-          validations: [1]
-        }
-      ]
-    };
-    setEntities([...entities, entity]);
-  };
-  const mappedEntities = entities.map((entity, index) => (
+  const [state, actions] = useCustom();
+  const mappedEntities = state.entities.map((entity, index) => (
     <Entity
       key={index}
       entity={entity}
-      addColumn={() => addColumn(index, entities, setEntities)}
+      // addColumn={() => addColumn(index, entities, setEntities)}
+      addColumn={actions.addColumn}
     />
   ));
   return (
     <>
       {mappedEntities}
-      <button onClick={click}>New Entity</button>
+      <button onClick={actions.addEntity}>New Entity</button>
     </>
   );
 }
