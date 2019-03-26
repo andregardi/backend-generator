@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 
 import { columnTypes } from "../../constants/columnTypes";
 import Validation from "./Validation";
-import { actions } from "../../hooks/entities";
 
 function Column(props) {
   const { column } = props;
@@ -36,7 +35,7 @@ function Column(props) {
           What is this?
         </a>
         <br />
-        <button type="button" onClick={actions.addValidation}>
+        <button type="button" onClick={props.addValidation}>
           Add Validation
         </button>
         <br />
